@@ -16,7 +16,7 @@ public interface CustomerDAO {
 
     customer checkCustomerLogin(String username, String passcode);
 
-    customer updateCustomerById(customer customer);
+    customer updateCustomerById(int customerId, String firstName, String lastName);
 
     Boolean deleteCustomer(int customerId);
 

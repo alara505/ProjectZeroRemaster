@@ -107,12 +107,33 @@ public class CustomerDAOImp implements CustomerDAO {
     }
 
     @Override
-    public customer updateCustomerById(customer customer) {
+    public customer updateCustomerById(int customerId, String firstName, String lastName) {
         return null;
     }
 
     @Override
     public Boolean deleteCustomer(int customerId) {
-        return null;
+        try(Connection connection = DatabaseConnection.createConnection()){
+            String sql = "delete from customer_table where customer_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                customer customer = new customer(
+                        resultSet.getInt("customer_id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("passcode"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name")
+                );
+                return true;
+            }
+            else{
+                throw new CustomerNotFound("Customer not found");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
