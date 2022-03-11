@@ -1,15 +1,15 @@
 package com.entities;
 
-public class customer {
+public class Customer {
         private int customerId;
         private String username;
         private String passcode;
         private String firstName;
         private String lastName;
 
-        public customer(){}
+        public Customer(){}
 
-        public customer(int customerId, String firstName, String lastName, String username, String passcode){
+        public Customer(int customerId, String firstName, String lastName, String username, String passcode){
             this.setCustomerId(customerId);
             this.setUsername(username);
             this.setPasscode(passcode);

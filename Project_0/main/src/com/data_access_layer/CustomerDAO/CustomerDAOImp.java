@@ -1,7 +1,6 @@
 package com.data_access_layer.CustomerDAO;
 
-import com.entities.customer;
-import com.data_access_layer.CustomerDAO.CustomerDAO;
+import com.entities.Customer;
 import com.util.DatabaseConnection;
 import com.custom_exceptions.CustomerNotFound;
 
@@ -14,14 +13,14 @@ public class CustomerDAOImp implements CustomerDAO {
     static int customer_id_gen = 4;
 
     @Override
-    public customer getCustomerById(int customerId) {
+    public Customer getCustomerById(int customerId) {
         try(Connection connection = DatabaseConnection.createConnection()){
             String sql = "select * from customer_table where customer_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, customerId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-                customer customer = new customer();
+                Customer customer = new Customer();
                 customer.setCustomerId(resultSet.getInt("customer_id"));
                 customer.setUsername(resultSet.getString("username"));
                 customer.setPasscode(resultSet.getString("passcode"));
@@ -39,7 +38,7 @@ public class CustomerDAOImp implements CustomerDAO {
     }
 
     @Override
-    public customer createCustomer(customer customer) {
+    public Customer createCustomer(Customer customer) {
         try(Connection connection = DatabaseConnection.createConnection()){
             String sql = "insert into customer_table values(?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -57,22 +56,22 @@ public class CustomerDAOImp implements CustomerDAO {
     }
 
     @Override
-    public List<customer> getAllCustomers() {
+    public List<Customer> getAllCustomers() {
         try(Connection connection = DatabaseConnection.createConnection()){
             String sql = "select * from user_table";
             Statement statement = connection.createStatement();
             ResultSet resultset = statement.executeQuery(sql);
-            List<customer> customers = new ArrayList<>();
+            List<Customer> Customers = new ArrayList<>();
             while(resultset.next()){
-                customer customer = new customer();
+                Customer customer = new Customer();
                 customer.setCustomerId(resultset.getInt("customer_id"));
                 customer.setUsername(resultset.getString("username"));
                 customer.setPasscode(resultset.getString("passcode"));
                 customer.setFirstName(resultset.getString("first_name"));
                 customer.setLastName(resultset.getString("last_name"));
-                customers.add(customer);
+                Customers.add(customer);
             }
-            return customers;
+            return Customers;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -80,7 +79,7 @@ public class CustomerDAOImp implements CustomerDAO {
     }
 
     @Override
-    public customer checkCustomerLogin(String username, String passcode) {
+    public Customer checkCustomerLogin(String username, String passcode) {
         try(Connection connection = DatabaseConnection.createConnection()){
             String sql = "select * from customer_table where username = ? and passcode = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -88,7 +87,7 @@ public class CustomerDAOImp implements CustomerDAO {
             preparedStatement.setString(1, passcode);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                customer customer = new customer(
+                Customer customer = new Customer(
                         resultSet.getInt("customer_id"),
                         resultSet.getString("username"),
                         resultSet.getString("passcode"),
@@ -107,8 +106,29 @@ public class CustomerDAOImp implements CustomerDAO {
     }
 
     @Override
-    public customer updateCustomerById(int customerId, String firstName, String lastName) {
-        return null;
+    public Customer updateCustomerById(int customerId, String firstName, String lastName) {
+        try(Connection connection = DatabaseConnection.createConnection()){
+            String sql = "update customer set username = ?, passcode = ?, first_name = ?, last_name = ? where customer_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                Customer customer = new Customer(
+                        resultSet.getInt("customer_id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("passcode"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name")
+                );
+                return customer;
+            }
+            else{
+                throw new CustomerNotFound("Customer not found");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -119,7 +139,7 @@ public class CustomerDAOImp implements CustomerDAO {
             preparedStatement.setInt(1, customerId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                customer customer = new customer(
+                Customer customer = new Customer(
                         resultSet.getInt("customer_id"),
                         resultSet.getString("username"),
                         resultSet.getString("passcode"),

@@ -1,4 +1,4 @@
 package com.entities;
 
-public class account {
+public class Account {
 }

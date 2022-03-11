@@ -1,6 +1,6 @@
 package com.data_access_layer.CustomerDAO;
 
-import com.entities.customer;
+import com.entities.Customer;
 
 import java.util.List;
 
@@ -8,15 +8,15 @@ import java.util.List;
 public interface CustomerDAO {
 
 
-    customer getCustomerById(int customerId);
+    Customer getCustomerById(int customerId);
 
-    customer createCustomer(customer customer);
+    Customer createCustomer(Customer customer);
 
-    List<customer> getAllCustomers();
+    List<Customer> getAllCustomers();
 
-    customer checkCustomerLogin(String username, String passcode);
+    Customer checkCustomerLogin(String username, String passcode);
 
-    customer updateCustomerById(int customerId, String firstName, String lastName);
+    Customer updateCustomerById(int customerId, String firstName, String lastName);
 
     Boolean deleteCustomer(int customerId);
 
