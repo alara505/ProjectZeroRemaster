@@ -1,4 +1,4 @@
-package java.dao;
+package com.java.tests.dao;
 
 import com.entities.Customer;
 import com.data_access_layer.CustomerDAO.CustomerDAO;
