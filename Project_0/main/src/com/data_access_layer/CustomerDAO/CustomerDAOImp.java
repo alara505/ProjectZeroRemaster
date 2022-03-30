@@ -15,7 +15,7 @@ public class CustomerDAOImp implements CustomerDAO {
     @Override
     public Customer getCustomerById(int customerId) {
         try(Connection connection = DatabaseConnection.createConnection()){
-            String sql = "select * from customer_table where customer_id = ?";
+            String sql = "select * from customer where customer_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, customerId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -40,7 +40,7 @@ public class CustomerDAOImp implements CustomerDAO {
     @Override
     public Customer createCustomer(Customer customer) {
         try(Connection connection = DatabaseConnection.createConnection()){
-            String sql = "insert into customer_table values(?, ?, ?, ?, ?)";
+            String sql = "insert into customer values(?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, customer.getCustomerId());
             preparedStatement.setString(2,customer.getUsername());
@@ -81,7 +81,7 @@ public class CustomerDAOImp implements CustomerDAO {
     @Override
     public Customer checkCustomerLogin(String username, String passcode) {
         try(Connection connection = DatabaseConnection.createConnection()){
-            String sql = "select * from customer_table where username = ? and passcode = ?";
+            String sql = "select * from customer where username = ? and passcode = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             preparedStatement.setString(1, passcode);
@@ -134,7 +134,7 @@ public class CustomerDAOImp implements CustomerDAO {
     @Override
     public Boolean deleteCustomer(int customerId) {
         try(Connection connection = DatabaseConnection.createConnection()){
-            String sql = "delete from customer_table where customer_id = ?";
+            String sql = "delete from customer where customer_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, customerId);
             ResultSet resultSet = preparedStatement.executeQuery();
